@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.koreait.cset.dao.BoardDAO">
+
+	<!-- 1. 페이지에 보일 게시글 목록 가져오기 -->
+	<select id="boardSelectList" resultType="com.koreait.cset.dto.BoardDTO">
+		SELECT *
+		FROM (SELECT ROWNUM AS RN, A.* 
+			FROM (SELECT BNO, MID, BTITLE, BCONTENT, BPW, BFILENAME, BHIT, BREF, BSTEP, BDEPTH, BCLASS, BREGDATE
+				FROM BOARD
+				WHERE BCLASS = #{param1}
+				ORDER BY BREF DESC, BDEPTH ASC, BSTEP DESC) A )
+		WHERE RN BETWEEN #{param2} AND #{param3}
+		
+	</select>
+	
+	<!-- 1-1. FAQ 목록 가져오기 -->
+	<!-- FAQ 목록은 QNA 게시글 중 조회수 TOP 10 -->
+	<select id="faqSelectList" resultType="com.koreait.cset.dto.BoardDTO">
+		SELECT *
+		FROM (SELECT ROWNUM AS RN, A.*
+			FROM (SELECT BNO, MID, BTITLE, BCONTENT, BPW, BFILENAME, BHIT, BREF, BSTEP, BDEPTH, BCLASS, BREGDATE
+				FROM BOARD
+				WHERE BCLASS = 1 AND BDEPTH = 0
+				ORDER BY BHIT DESC) A)
+		WHERE RN BETWEEN 1 AND 10
+	</select>
+	
+	<!-- 2. 게시글 전체 개수 조회 -->
+	<select id="boardTotalRecords" resultType="int">
+		SELECT COUNT(*)
+		FROM BOARD
+		WHERE BCLASS = #{bClass}
+	</select>
+	
+	<!-- 3. 게시글 검색 -->
+	<select id="boardSelectByQuery" resultType="com.koreait.cset.dto.BoardDTO">	
+		SELECT *
+			FROM (SELECT ROWNUM AS RN, A.* 
+				FROM (SELECT BNO, MID, BTITLE, BCONTENT, BPW, BHIT, BFILENAME, BREF, BSTEP, BDEPTH, BCLASS, BREGDATE
+					FROM BOARD
+					WHERE BCLASS = #{param1}
+				<if test='param4 == "bTitle"'>
+					AND BTITLE LIKE CONCAT('%', CONCAT(#{param5}, '%')) 
+				</if>
+				<if test='param4 == "bContent"'>
+					AND BCONTENT LIKE CONCAT('%', CONCAT(#{param5}, '%')) 
+				</if>
+				<if test='param4 == "mId"'>
+					AND MID LIKE CONCAT('%', CONCAT(#{param5}, '%')) 
+				</if>
+				<if test='param4 == "bTitleContent"'>
+					AND ( BTITLE LIKE CONCAT('%', CONCAT(#{param5}, '%')) 
+						  OR BCONTENT LIKE CONCAT('%', CONCAT(#{param5}, '%'))
+					)
+				</if>				
+					ORDER BY BREF DESC, BDEPTH ASC, BSTEP DESC) A )
+			WHERE RN BETWEEN #{param2} AND #{param3}	
+	</select>
+	
+	<!-- 3-1 FAQ 게시글 검색 -->
+	<select id="faqBoardSelectByQuery" resultType="com.koreait.cset.dto.BoardDTO">
+		SELECT *
+		FROM (SELECT ROWNUM AS RN, A.*
+			FROM (SELECT * 
+				FROM BOARD
+				WHERE BCLASS = 1 AND BDEPTH = 0
+				ORDER BY BHIT DESC) A)
+		WHERE RN BETWEEN 1 AND 10
+		AND
+		<if test='param1 == "bTitle"'>
+			BTITLE LIKE CONCAT('%', CONCAT(#{param2}, '%'))
+		</if>
+		<if test='param1 == "bContent"'>
+			BCONTENT LIKE CONCAT('%', CONCAT(#{param2}, '%'))
+		</if>
+		<if test='param1 == "bTitleContent"'>
+			BTITLE LIKE CONCAT('%', CONCAT(#{param2}, '%')) 
+		    OR BCONTENT LIKE CONCAT('%', CONCAT(#{param2}, '%'))					
+		</if>				
+	</select>
+	
+	<!-- 3-2 게시글 검색 결과 총 개수 조회 -->
+	<select id="boardQueryTotalRecords" resultType="int">
+		SELECT COUNT(*) FROM BOARD
+		WHERE BCLASS = #{param1}
+		<if test='param2 == "bTitle"'>
+				AND BTITLE LIKE CONCAT('%', CONCAT(#{param3}, '%')) 
+			</if>
+			<if test='param2 == "bContent"'>
+				AND BCONTENT LIKE CONCAT('%', CONCAT(#{param3}, '%')) 
+			</if>
+			<if test='param2 == "mId"'>
+				AND MID LIKE CONCAT('%', CONCAT(#{param3}, '%')) 
+			</if>
+			<if test='param2 == "bTitleContent"'>
+				AND ( BTITLE LIKE CONCAT('%', CONCAT(#{param3}, '%')) 
+					  OR BCONTENT LIKE CONCAT('%', CONCAT(#{param3}, '%'))
+				)
+			</if>
+	</select>
+	
+	<!-- 4. 게시글 하나 조회 -->
+	<select id="boardSelectBybNo" resultType="com.koreait.cset.dto.BoardDTO">
+		SELECT *
+		FROM BOARD
+		WHERE BNO = #{bNo}		
+	</select>
+	
+	<!-- 4-1. FAQ 게시글 조회 -->
+	<select id="boardSelectBybRef" resultType="com.koreait.cset.dto.BoardDTO">
+		SELECT *
+		FROM BOARD
+		WHERE BREF = #{bNo}
+	</select>
+	
+	<!-- 5. 게시글 조회수 증가 -->
+	<select id="boardUpdateHit">
+		UPDATE BOARD
+		SET BHIT = BHIT + 1
+		WHERE BNO = #{bNo}
+	</select>	
+	
+	<!-- 6. 게시글 삽입 -->
+	<insert id="boardInsert">
+			INSERT INTO BOARD (BNO, MID, BTITLE, BCONTENT, BPW, 
+		<if test="bFilename != null">
+			BFILENAME, 
+		</if>
+			BHIT, BREF, BSTEP, BDEPTH, BCLASS, BREGDATE)
+			VALUES(BOARD_SEQ.NEXTVAL, #{mId}, #{bTitle}, #{bContent}, #{bPw}, 
+		<if test="bFilename != null">
+			#{bFilename}, 
+		</if>
+			 0, BOARD_SEQ.CURRVAL, 0, 0, #{bClass}, SYSDATE)		
+	</insert>
+	
+	<!-- 7. 게시글 수정 -->
+	<update id="boardUpdate">
+		UPDATE BOARD
+		SET BTITLE = #{bTitle}, BCONTENT = #{bContent}
+		<if test="bFilename != null">
+			, BFILENAME = #{bFilename}
+		</if>
+		WHERE BNO = #{bNo}
+	</update>
+	
+	<!-- 8. 원글이 같은(bRef가 같은) 기존 댓글(bDepth > 0)들 모두 bStep 1씩 증가 -->
+	<update id="boardUpdatebStep">
+		UPDATE BOARD
+		SET BSTEP = BSTEP + 1
+		WHERE BREF = #{bRef} AND BDEPTH > 0
+	</update>
+	
+	<!-- 9. 댓글 삽입 -->
+	<insert id="replyInsert">
+		INSERT INTO BOARD (BNO, MID, BTITLE, BCONTENT, BPW,
+		<if test="bFilename != null">
+			BFILENAME, 
+		</if>
+		BHIT, BREF, BSTEP, BDEPTH, BCLASS, BREGDATE)
+		VALUES(BOARD_SEQ.NEXTVAL, #{mId}, #{bTitle}, #{bContent}, #{bPw}, 
+		<if test="bFilename != null">
+		#{bFilename},
+		</if>
+		0, #{bRef}, #{bStep}, #{bDepth}, #{bClass}, SYSDATE)
+	</insert>
+	
+	<!-- 10. 게시글 삭제 -->
+	<delete id="boardDelete">
+		DELETE FROM BOARD
+		WHERE BNO = #{bNo}
+	</delete>
+	
+	<!-- 11. Q&A 게시판에서 구매했던 상품Number, 상품이름 띄우기 -->
+	
+	<!-- 12. 내가 작성한 게시글 보기 -->
+	<select id="boardSelectBymId" resultType="com.koreait.cset.dto.BoardDTO">
+		SELECT * FROM BOARD
+		WHERE MID = #{mId}
+	</select>
+
+</mapper>

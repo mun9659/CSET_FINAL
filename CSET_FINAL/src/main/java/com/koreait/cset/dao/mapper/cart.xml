@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.koreait.cset.dao.CartDAO">
+	
+	<!-- 1. 장바구니 추가 -->
+	<insert id="cartInsert" parameterType="com.koreait.cset.dto.CartDTO">
+		INSERT INTO CART (CNO, MID, PNO, CAMOUNT, CSIZE) 
+		VALUES (CART_SEQ.NEXTVAL, #{mId}, #{pNo}, #{cAmount}, #{cSize})
+	</insert>
+	
+	<!-- 2. 장바구니 목록 -->
+	<select id="cartListPage" parameterType="String" resultType="com.koreait.cset.dto.CartJoinVO">
+        SELECT MIN(C.CNO) CNO, C.MID, C.PNO, SUM(C.CAMOUNT) CAMOUNT, C.CSIZE, P.PPRICE, P.PNAME, P.PFILENAME, P.PDISRATE
+        <!-- 중복된 상품의 가장 오래된 장바구니 번호,  -->
+		FROM CART C, PRODUCTS P, MEMBERS M
+		WHERE M.MID=C.MID AND C.PNO=P.PNO AND C.MID = #{param1}
+		GROUP BY C.MID, C.PNO, C.CSIZE, P.PPRICE, P.PNAME, P.PFILENAME, P.PDISRATE
+		ORDER BY CNO
+	</select>
+	
+	<!-- 3. 금액 합계 -->
+	<select id="cartSumMoney" resultType="int">
+        SELECT NVL(SUM(ROUND(PPRICE * (1-(PDISRATE/100)), -2) * CAMOUNT),0)
+        FROM CART C,PRODUCTS P
+        <!-- 장바구니 테이블과 상품 테이블로 부터 -->
+        WHERE C.PNO = P.PNO AND C.MID = #{mId}
+        <!--조건 : 장바구니테이블의 상품 ID가 상품테이블의 상품 id와 같고, 요청하는 회원의 id와 같은 경우 -->
+    </select>
+    
+    <!-- 4. 개별 카트 지우기 -->
+    <delete id="cartDelete">
+    	DELETE FROM CART
+    	WHERE CNO = #{cNo}
+    </delete>
+    
+    <!-- 5. 선택 카트 지우기 -->
+    <delete id="cartDeleteSelect">
+    	DELETE FROM CART
+    	WHERE CNO = #{cNo} 
+    </delete>
+	
+	<!-- 6. 장바구니 상품수량 변경 -->
+	<update id="cartAmountPlus">
+		UPDATE CART
+		SET CAMOUNT = #{param2}
+		WHERE CNO = #{param1}
+	</update>
+	<update id="cartAmountMinus">
+		UPDATE CART
+		SET CAMOUNT = #{param2}
+		WHERE CNO = #{param1}
+	</update>
+	
+	<!-- 7. 장바구니 리스트 값 가져오기 -->
+	<select id="selectCartBycNo" resultType="com.koreait.cset.dto.CartJoinVO">
+		SELECT P.PNO, C.MID, PNAME, PBRAND, CAMOUNT, CSIZE, PPRICE, P.PFILENAME, P.PDISRATE
+        FROM CART C, PRODUCTS P
+        WHERE CNO = #{cNo} AND C.PNO = P.PNO 
+	</select>
+	
+	<!-- 8. 장바구니에서 취소시 삭제 요청 -->
+	<delete id="cartAllDelete">
+		DELETE FROM CART
+		WHERE MID = #{mId}
+	</delete>
+</mapper>

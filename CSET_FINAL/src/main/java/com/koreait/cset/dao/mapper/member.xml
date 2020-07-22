@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.koreait.cset.dao.MemberDAO">
+
+
+	<insert id="memberInsert">
+	
+	INSERT INTO MEMBERS (MNO,MSNO,MID,MNAME,MPW,MADDR,MPNO,MEMAIL,MPHONE,MPAYMENT,MPOINT,MGRADE,MREGDATE)
+	VALUES (MEMBERS_SEQ.nextval,#{param1},#{param2},#{param3},#{param4},#{param5},#{param6},#{param7},#{param8},NULL,2000,'D',SYSDATE)
+	</insert>
+	<select id="selectBymIdmPw" resultType="com.koreait.cset.dto.MemberDTO" parameterType="com.koreait.cset.dto.MemberDTO">
+		SELECT *
+		FROM MEMBERS
+		WHERE MID = #{mId} AND MPW = #{mPw}
+	</select>
+	<select id="memberselectList" resultType="com.koreait.cset.dto.MemberDTO">
+		SELECT MNO,MSNO,MID,MNAME,MPW,MADDR,MPNO,MEMAIL,MPHONE,MPAYMENT,MPOINT,MGRADE,MREGDATE
+		FROM MEMBERS
+		ORDER BY MNO
+	</select>
+	<delete id="memeberDelete" parameterType="String">
+		DELETE FROM MEMBERS 
+		WHERE MID = #{mId}
+	</delete>
+	<update id="memberChange">
+		UPDATE MEMBERS
+		SET MNAME = #{param1}, MEMAIL = #{param2}, MPHONE = #{param3}, MADDR = #{param4}
+		WHERE MNO =#{param5}
+	
+	</update>
+
+    <select id="memberselectByNo" parameterType="int" resultType="com.koreait.cset.dto.MemberDTO">
+		SELECT MNO,MSNO,MID,MNAME,MPW,MADDR,MPNO,MEMAIL,MPHONE,MPAYMENT,MPOINT,MGRADE,MREGDATE
+		FROM MEMBERS
+		WHERE MNO = #{mNo}
+	</select>
+
+	<select id="memberselectBymId" parameterType="String" resultType="com.koreait.cset.dto.MemberDTO">
+      SELECT *
+      FROM MEMBERS
+      WHERE UPPER (MID) = UPPER (#{mId})
+   </select>
+
+	<select id="memberselectBymEmail" parameterType="String" resultType="com.koreait.cset.dto.MemberDTO">
+		SELECT *
+		FROM MEMBERS
+		WHERE MEMAIL = #{mEmail}
+	</select>
+	<insert id="memberProductInsert">
+		INSERT INTO PRODUCTS (PNO, PNAME, PFILENAME, PPRICE, PCATEGORY, PCATEGORY_SUB, PBRAND, PDISRATE)
+		VALUES (PRODUCTS_SEQ.NEXTVAL, #{param1},#{param2},#{param3},#{param4},#{param5},#{param6},0)
+	</insert> 
+	<select id="selectProductList" resultType="com.koreait.cset.dto.ProductsDTO">
+		SELECT PNO, PNAME, PFILENAME, PPRICE, PCATEGORY, PCATEGORY_SUB, PBRAND, PDISRATE
+		FROM PRODUCTS
+		ORDER BY PNO DESC
+	</select>
+
+	<update id="memberProductPriceChange" parameterType="int">
+		UPDATE PRODUCTS
+		SET PPRICE = #{param1}
+		WHERE PNO =#{param2}	
+	</update>
+	<update id="memberUpdatedisrateChange" parameterType="int">
+		UPDATE PRODUCTS
+		SET PDISRATE = #{param1}
+		WHERE PNO =#{param2}	
+	</update>
+
+	<update id="memberUpdateGrade">
+		UPDATE MEMBERS
+		SET MGRADE = #{param1}
+		WHERE MNO = #{param2}
+	</update>
+	<update id="memberUpdatePoint">
+		UPDATE MEMBERS
+		SET MPOINT = NVL(MPOINT, 0) + ${param1}
+		WHERE MNO = #{param2}
+	</update>
+
+	<select id="memberOrderView" resultType="com.koreait.cset.dto.JoinVO" parameterType="int">
+		SELECT M.MID , M.MNAME, P.PNAME,O.OPRICE , O.OAMOUNT, O.ODATE, O.ONO, P.PFILENAME ,P.PNO
+		FROM ORDERS O , MEMBERS M , PRODUCTS P
+		WHERE M.MNO = O.MNO
+		AND P.PNO = O.PNO 
+		AND M.MNO = #{param1}
+		ORDER BY O.ODATE DESC
+	</select>
+	
+	<!-- 07-14 -->
+	<update id="memberChangePw">
+		UPDATE MEMBERS
+		SET MPW = #{param1}
+		WHERE MID = #{param2}
+	</update>
+
+	<delete id="memberDeleteReview" parameterType="String">
+		DELETE FROM REVIEWS 
+		WHERE MID = #{mId}
+	</delete>
+	
+	<delete id="memberDeleteOrder" parameterType="int">
+		DELETE FROM ORDERS 
+		WHERE MNO = #{mNo}
+	</delete>
+		<delete id="memberDeleteBoard" parameterType="String">
+		DELETE FROM BOARD
+		WHERE MID = #{mId}
+	</delete>
+
+	<delete id="memberDeleteCart" parameterType="String">
+		DELETE FROM CART
+		WHERE MID = #{mId}
+	</delete>
+
+
+	<!--0715  -->
+	<select id="memberOrderPeriod" resultType="com.koreait.cset.dto.JoinVO">
+		SELECT M.MID , M.MNAME, P.PNAME,P.PPRICE , O.OAMOUNT, O.ODATE, O.ONO, P.PFILENAME ,P.PNO
+		FROM ORDERS O , MEMBERS M , PRODUCTS P
+		WHERE M.MNO = O.MNO
+		AND P.PNO = O.PNO 
+		AND M.MNO = #{param1}
+		
+		<if test="param2 == null">
+			AND TO_DATE(TO_CHAR(O.ODATE, 'YYYY-MM-DD'), 'YYYY-MM-DD') BETWEEN TO_DATE('2000-01-01', 'YYYY-MM-DD')  
+	                   AND TO_DATE(#{param3}, 'YYYY-MM-DD')			
+		</if>		
+		<if test="param3 == null">
+			AND TO_DATE(TO_CHAR(O.ODATE, 'YYYY-MM-DD'), 'YYYY-MM-DD') BETWEEN TO_DATE(#{param2}, 'YYYY-MM-DD')  
+	        	AND TO_DATE(SYSDATE, 'YYYY-MM-DD')			
+		</if>
+		<if test="param2 != null and param3 != null">
+			AND TO_DATE(TO_CHAR(O.ODATE, 'YYYY-MM-DD'), 'YYYY-MM-DD') BETWEEN TO_DATE(#{param2}, 'YYYY-MM-DD') 
+	                   AND TO_DATE(#{param3}, 'YYYY-MM-DD')	
+		</if>		
+		ORDER BY TO_DATE(O.ODATE, 'YYYY-MM-DD') DESC
+	</select>
+
+	<!-- 관리자 회원검색 -->
+	 <select id="memberSelectByQuery" resultType="com.koreait.cset.dto.MemberDTO">
+      SELECT * FROM MEMBERS
+      WHERE UPPER (MID) LIKE UPPER( '%' || #{query} || '%') 
+      OR UPPER (MNAME) LIKE UPPER ('%' || #{query} || '%')
+   </select>
+	<!--0717  -->
+	<select id="memeberSelectPno" resultType="int">
+		SELECT MAX(PNO)
+		FROM PRODUCTS	
+	</select>
+	<insert id="memberStockInsertS">	  
+      INSERT INTO STOCK
+      (SNO, PNO, PSIZE, SAMOUNT)
+      VALUES ( STOCK_SEQ.NEXTVAL, #{param1}, 'S', #{param2})
+	</insert>
+	<insert id="memberStockInsertM">	  
+      INSERT INTO STOCK
+      (SNO, PNO, PSIZE, SAMOUNT)
+      VALUES ( STOCK_SEQ.NEXTVAL, #{param1}, 'M', #{param2})
+	</insert>
+	<insert id="memberStockInsertL">	  
+      INSERT INTO STOCK
+      (SNO, PNO, PSIZE, SAMOUNT)
+      VALUES ( STOCK_SEQ.NEXTVAL, #{param1}, 'L', #{param2})
+	</insert>
+</mapper>

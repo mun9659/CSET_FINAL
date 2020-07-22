@@ -1,0 +1,1184 @@
+@charset "UTF-8";
+@import url('init.css');
+@import url('members.css');
+
+/** 공통 요소 **/
+input[type="button"]
+, button
+, input[type="submit"] {
+	display: inline-block;
+	background: black;
+	color: white;
+	font-family: inherit;
+	border: none;
+	padding: 10px;
+	width: 120px;
+}
+
+input:focus{
+	outline: none;
+}
+
+
+input[type="number"] {
+	width: 100px;
+	text-align:center;
+	font-size: 1.1rem;
+}
+
+input[type="text"]
+, input[type="password"]
+, textarea {
+	padding: 5px 10px;
+	font-size: 14px;
+	font-family: inherit;
+	
+}
+
+.align-right {
+	text-align: right;
+}
+
+select {
+	padding: 7.5px;
+}
+
+.page-title {
+	font-weight: bold;
+	font-size: 35px;
+	text-align: center;
+	margin-bottom: 80px;
+}
+
+.page-subtitle {
+	font-size: 25px;
+	font-weight: bold;
+	text-align: center;
+	margin: 60px;
+}
+
+.required {
+	color: red;
+}
+
+.wrap{
+	margin: 80px auto;
+}
+
+.btn-box {
+	padding: 30px;
+	text-align: center;
+}
+
+.btn-box button
+, btn-box input[type="button"] {
+	display: inline-block;
+}
+
+.btn-box button:not(:last-child)
+, btn-box input[type="button"]:not(:last-child){
+	margin-right: 10px;
+}
+
+.eng-title {
+	font-family: 'Galada', cursive;
+}
+
+.notice {
+	text-align: center;
+	font-size: 1.2rem;
+	font-weight: bold;
+	color: slateblue;
+}
+
+table {
+	width: 100%;
+	border-top: 3px solid grey;
+	border-bottom: 3px solid grey;
+	vertical-align: middle;
+}
+
+td, th {
+	padding: 10px;
+	border-top: 1px solid lightgrey;
+	border-bottom: 1px solid lightgrey;
+	vertical-align: middle;
+}
+
+.bold {
+	font-weight: bold;
+}
+
+.admin-btn {
+	width: 160px;
+	background: slateblue;
+}
+
+del {
+	text-decoration: line-through;
+	color: lightgrey;
+}
+
+.centered {
+	text-align: center;
+}
+
+progress {
+	height: 50px;
+	vertical-align: middle;
+	margin: 0 15px;
+}
+
+progress[value]::-webkit-progress-bar {
+  background-color: slateblue;
+  border-radius: 2px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.25) inset;
+}
+
+.page-block {
+	margin: 10px auto;
+}
+
+.page-block > * {
+	display: inline-block;
+	font-size: 1.1rem;
+	padding: 5px 10px;
+	text-align: center;
+}
+
+.page-block > *:not(:last-child){
+	border-right: 1px solid lightgrey;
+}
+
+/*------------------------------------------------------------
+
+	HEADER
+
+--------------------------------------------------------------*/
+
+.top-header {
+	height: 300px;
+}
+
+.top-header .top-banner{
+	height: 80px;
+	background-image: url('../img/top-banner.jpg');
+	background-repeat: no-repeat;
+	background-position: center;
+	background-size: cover;
+	color: white;
+	text-align: center;
+	line-height: 80px;
+}
+
+.top-header .logo-box {
+	display: flex;
+	align-items: center;
+	width: 1300px;
+	margin: 0 auto;
+	height: 150px;
+		
+	
+}
+
+.logo-box > form {
+	display: flex;
+	align-items: center;
+	background-color: lightgrey;
+	width: 320px;
+	height: 40px;
+	border-radius: 15px;
+	padding: 12px;
+	margin-right: 10px;
+}
+
+.logo-box > form button,
+.logo-box > form input {
+	display: block;
+	padding: 10px 5px;
+	background: none;
+	border: none;
+}
+
+.queryBtn {
+	width: 30px;
+}
+
+.logo-box > form input {
+	width: 80%;
+}
+
+.logo-box > form button i {
+	font-size: 20px;
+}
+
+.logo-box > form button:focus,
+.logo-box > form input:focus {
+	outline: none;
+}
+
+.logo-box .logo {
+	display: block;
+	font-weight: bold;
+	font-size: 60px;
+	font-family: 'Galada', cursive;
+	justify-self: center;
+	margin: 0 auto;
+	width: 300px;
+	text-align: center;
+}
+
+.logo-box .top-nav {
+	display: flex;
+	width: 320px;
+	justify-content: center;
+	font-size: 14px;
+}
+
+.logo-box .top-nav li {
+	padding: 0 10px
+}
+
+.logo-box .top-nav li:not(:last-child){
+	border-right: 1px solid #333;
+}
+
+.nav-box {
+	height: 70px;
+	border-top: 1px;
+	border-bottom: 1px;
+	border-color: black;
+	border-style: solid;
+}
+
+.main-nav > ul {
+	display: flex;
+	justify-content: center;
+	min-width: 1025px;
+	align-items: center;
+}
+
+.main-nav > ul li a {
+	display: block;
+	line-height: 70px;
+	padding: 0 40px;
+	font-size: 20px;
+	font-weight:bold;
+	text-align: center;
+}
+
+.main-nav > ul li a:hover {
+	background: lightsteelblue;
+} 
+
+.dropdown {
+	position: relative;
+	float: left;
+	width: 150px;
+}
+
+.dropdown-content {
+	display: none;
+	position: absolute;
+	left: 0;
+	background-color: #f1f1f1;
+	box-shadow: 5px 5px 5px 0px rgba(0,0,0,0.2);
+	z-index: 10;
+}
+
+.main-nav .dropdown-content > a {
+	display: block;
+	padding: 10px;
+	width: 200px;
+	font-size: 1.2rem;
+	font-weight: bold;
+}
+
+.dropdown:hover {
+	background-color: #f1f1f1;
+}
+
+.dropdown.a:hover .dropdown-content.a{
+	display:block;
+}
+.dropdown.b:hover .dropdown-content.b{
+	display:block;
+}
+.dropdown.c:hover .dropdown-content.c{
+	display:block;
+}
+.dropdown.d:hover .dropdown-content.d{
+	display:block;
+}
+.dropdown.e:hover .dropdown-content.e{
+	display:block;
+}
+.dropdown.a:hover .dropdown-content.a{
+	display:block;
+}
+
+
+/*------------------------------------------------------------
+
+	FOOTER
+
+--------------------------------------------------------------*/
+footer {
+	height: 400px;
+	background-color: black;
+	font-size: 12px;
+	padding: 0 100px;
+}
+
+footer a {
+	font-size: 15px;
+}
+
+footer a, footer i, footer h1 {
+	color:white;
+}
+
+footer a > i {
+	font-size: 22px;
+	vertical-align: middle;
+}
+
+footer ul {
+	display: flex;
+}
+
+footer ul > li:not(:last-child) {
+	padding-right: 20px;
+}
+
+footer p {
+	line-height: 1.5;
+	color: grey;
+}
+
+.footer-top, .footer-bottom {
+	padding: 40px 0;
+}
+
+.footer-top {
+	height: 40%;	
+	border-bottom: 1px solid white;
+	display: flex;
+	justify-content: space-between; 
+}
+
+.company-contact h1 {
+	font-weight: bold;
+	font-size: 35px;
+	margin-bottom: 20px;
+}
+
+
+.company-info {
+	display: flex;
+	justify-content: space-between;
+	margin-bottom: 20px;
+}
+
+
+
+.footer-bottom .terms {
+	display:flex;
+}
+
+.terms li:not(:first-child) {
+	border-left: 1px solid white;
+	padding: 0 15px;
+}
+
+
+
+
+/*------------------------------------------------------------
+
+	INDEX
+
+--------------------------------------------------------------*/
+.temp-logo {
+	text-align: center;
+	font-size: 60px;
+	font-weight: bold;
+	color: lightgrey;
+	height: 100%;
+	line-height: 400px;
+	font-family: 'Galada', cursive;
+}
+
+.temp-phrase {
+	text-align: center;
+	padding: 40px;
+	font-size: 35px;
+	font-family: 'Galada', cursive;
+}
+
+.admin-box {	
+	text-align: center;
+}
+
+.admin-box h2 {
+	font-size: 35px;
+	font-weight: bold;
+	color: slateblue;
+	padding: 30px;
+}
+
+.admin-menu {
+	font-size: 25px;
+	text-align: center;
+}
+
+
+.admin-menu li > a {
+	display: block;
+	width: 350px;
+	color: white;
+	background: black;
+	border-radius: 15px;
+	color: white;
+	padding: 20px;
+	margin: 20px auto;
+}
+
+.main-banner .swiper-container {
+	height: 400px;
+	width: 100%;
+}
+
+.main-banner .swiper-slide {
+	overflow: hidden;
+}
+
+.main-banner .swiper-slide > div {
+	width: 100%;
+	height: 100%;
+	background-repeat: no-repeat;
+	background-position: center;
+	background-size:  cover;
+	
+}
+
+.main-banner .swiper-slide > div:nth-child(1){
+	background-image: linear-gradient(to bottom, rgba(0,0,0, 0.3), 
+		rgba(0,0,0,0.5)), url("../img/closet-banner.jpg");
+	background-position: top;
+}
+
+
+/*------------------------------------------------------------
+
+	BOARD
+
+--------------------------------------------------------------*/
+/* 1. boardListPage */
+/* 모든 wrap들 가운데로 모아넣기 */
+.board.wrap {
+	width: 1200px;
+}
+
+.board table {
+	width: 100%;
+}
+
+.board table td,
+.board table th {
+	padding: 15px;
+}
+
+.board{
+	padding: 70px 0;
+	margin: 20px auto;
+	width: 1100px;
+}
+
+.board-nave {
+	margin: 50px auto;
+}
+
+.board-nav > ul {
+	display: flex;
+	justify-content: center;
+}
+
+.board-nav > ul li {
+	margin: 0 30px; 
+}
+
+.board-nav > ul li a {
+	display: block;
+	padding: 15px;
+	width: 140px;
+	text-align: center;
+	background: black;
+	color: white;
+}
+
+
+.board-title {
+	text-align: center;
+	margin: 40px auto;
+	font-weight: bold;
+	font-size: 40px;
+}
+
+
+.board table {
+	margin-bottom: 30px;
+}
+
+.board table tr {
+	border-top: 1px solid lightgrey;
+	boder-bottom: 1px solid ligthgrey;
+}
+
+.board table th,
+.board table td {
+	padding: 15px;
+	text-align: center;	
+	border:none;
+}
+
+.board table tr td:nth-child(2) {
+	font-weight: bold;
+	font-size: 1.2rem;
+	text-align: left;
+}
+
+.boardlist-foot {
+	display: flex;
+	justify-content: space-between;
+}
+
+.query-box {
+	display: flex;
+	justify-content: space-between;
+}
+
+.query-box form > * {
+	display: inline-block;	
+}
+
+.query-box form > *:not(:last-child){
+	margin-right: 10px;
+}
+
+/* 2.boardViewPage.jsp*/
+.board-view {
+	width: 1000px;
+}
+
+.board-view table {
+	width: 90%;
+	border: none;
+	margin: 40px auto;
+}
+
+.board-view table td,
+.board-view table th {
+	padding: 15px 30px;
+}
+
+.board-view .board-content{
+	padding: 40px;
+}
+
+.board-content pre {
+	display: inline-block;
+	line-height: 1.4;
+	width: 90%;
+}
+
+.board-view table td[rowspan="2"] {
+	line-height: 50px;
+}
+
+.board-img {
+	display: block;
+	margin: 30px auto;
+	width: 500px;
+	height: 620px;
+	background-size: cover;
+	background-position: center;
+}
+
+.board-view .view-title {
+	border-top: 3px double lightgrey;
+	border-bottom: 3px double lightgrey;
+	font-weight: bold;
+	font-size: 24px;
+	
+}
+
+
+
+
+/* 3. boardInsertPage, replyInsertPage */
+
+.board-insert {
+	width: 900px;
+}
+
+.board-insert-form > table {
+	width: 800px;
+	margin: 20px auto;
+	text-align:center;
+
+}
+
+.board-insert-form > table th {
+	width: 20%;	
+}
+
+
+.board-insert-form input[type="text"]{
+	width: 400px;
+}
+
+.board-insert-form input[type="text"]
+, .board-insert-form input[type="password"]{
+	border: none;
+	border-bottom: 3px double grey;
+}
+
+.board-insert-form table td[colspan="2"]{
+	
+}
+
+.board-insert-form textarea {
+	width: 650px;
+	height: 300px;
+	line-height: 1.5;
+	padding: 10px;
+}
+
+.board-insert-btn{
+	margin: 10px 20px;
+	padding: 10px;
+}
+
+
+/*------------------------------------------------------------
+
+	PRODUCTS
+
+--------------------------------------------------------------*/
+
+
+.product-img.review {
+	width: 200px;
+	height: 200px;
+	background-size: cover;
+	background-position: center;	
+	margin: auto;
+}
+
+.product-img.small {
+	width: 140px;
+	height: 140px;
+	background-size: cover;
+	background-position: center;
+	margin: auto;
+}
+
+.product-img.medium {
+	display: block;
+	width: 330px;
+	height: 400px;
+	position: relative;
+	background-size: cover;
+	background-position: center;
+	margin: auto;
+}
+
+.product-img.large {
+	width: 550px;
+	height: 650px;
+	background-size: cover;
+	background-position: center;
+	margin: auto;
+}
+
+.product-name {
+	font-size: 1.2rem;
+	font-weight: bold;
+}
+
+
+/* index(top10) */
+.products-box .rank-box {
+	display:block;
+	position: absolute;
+	right: 0;
+	top: 0;
+	width: 50px;
+	height: 50px;
+	text-align: center;
+	line-height: 50px;
+	font-size: 1.2rem;
+	font-weight:bold;
+	background: midnightblue;
+	color: white;
+	margin:0;
+}
+
+
+
+/* productsListPage */
+.products-box{
+	width: 1200px;
+	margin: 80px auto;
+	display: flex;
+	justify-content: space-between;
+	flex-wrap: wrap;
+}
+
+.products-list .notice {
+	margin: 60px auto;
+	font-size: 2.5rem;	
+}
+
+.product-item  {
+	width: 330px;
+	margin-bottom: 50px;	
+}
+
+.products-box > li a {
+	display: block;
+}
+
+.products-box li {	
+	margin: 6px 0;
+}
+
+
+.products-box .prod-info {
+	display: block;
+	margin: 20px 0;
+}
+
+.product-query-ckbox {
+	width: 1200px;
+	margin: 30px auto;
+}
+
+.product-query-ckbox form {
+	border-top: 3px solid lightgrey;
+	border-bottom: 3px solid lightgrey;
+	padding: 30px 0;
+}
+
+.product-query-ckbox table{
+	width: 95%;
+	margin: auto;
+	border:none;
+}
+
+.product-query-ckbox table td {
+	padding: 10px 0;
+	border: none;
+}
+
+.product-query-ckbox table td label {
+	display: inline-block;
+	margin-right: 10px;
+}
+
+.disrate{
+	color: crimson;
+	font-weight: bold;
+}
+
+.isOnSale {
+	position:absolute;
+	display: inline-block;
+	background: orange;
+	color: white;		
+	font-family: 'Galada', cursive;
+	font-size: 1.2rem;
+	padding: 10px;
+	
+}
+
+.star_background > i {
+	color: #f1f1f1;
+}
+
+.star_fill > i {
+	color: orange;
+}
+
+
+/* productsViewPage.jsp  */
+.product-view.wrap{
+	width: 1200px;
+}
+
+.product-view-box {
+	display: flex;
+	justify-content: space-between;
+}
+
+.product-view-box .isOnsale{
+	font-size: 1.4rem;
+	padding: 15px;
+}
+
+.ckbox-title{
+	width: 80px;
+}
+
+.product-price {
+	font-size: 1.6rem;
+	font-weight: bold;	
+}
+
+.product-price-small {
+	font-size: 1.3rem;
+	font-weight: bold;	
+}
+
+.dis-price {
+	color: slateblue;
+}
+
+.fa-arrow-right{
+	display: inline-block;
+	font-size: 1.6rem;
+	font-weight: bold;
+	margin: 0 15px;
+}
+
+.product-info {
+	width: 45%;
+}
+
+.product-info ul li{
+	padding: 25px 0;
+	font-size: 1.3rem;
+}
+
+.product-info .page-title {
+	margin-bottom: 10px;
+}
+
+.product-info ul li > div {
+	margin-bottom: 10px;
+}
+
+.product-info ul li select {
+	width: 90%;
+	height: 50px;
+	font-size: 1.2rem;
+}
+
+.product-info input[type="number"] {
+	height: 40px;
+	width: 100px;
+}
+
+.product-info .page-title {
+	font-size: 2.2rem;
+}
+
+.member-point {
+	vertical-align: middle;
+	font-size: 1.4rem;
+}
+
+.btn-box .prod-view-btn{
+	width: 32%;
+	height: 50px;
+	font-size: 1.1rem;
+}
+
+
+.product-review .page-subtitle {
+	color: slateblue;
+	font-size: 2rem;
+}
+
+.product-review table {
+	width: 100%;
+	margin: 50px auto;
+	
+}
+
+.product-review table ul {
+	display: flex;
+	justify-content: space-between;
+}
+
+
+.product-review table ul > li{
+	padding: 10px;
+}
+
+.product-review table ul > li > * {
+	display: block;
+	margin: 7px 0;
+	
+}
+
+.product-review table ul > li:first-child {
+	width: 30%;
+}
+.product-review table ul > li:last-child {
+	width: 65%;
+	text-align: left;
+}
+
+.product-review .product-img {
+	margin: 0;
+}
+
+.reviews-count {
+	font-weight: bold;
+	font-size: 1.2rem;
+}
+
+.product-review .review-contents {
+	margin: 30px auto;
+}
+
+.review-contents span {
+	line-height: 1.6;
+}
+
+.review-contents a {
+	color: slateblue;
+	font-weight: bold;
+}
+
+.review-writer {
+	font-size: 1.2rem;
+	font-weight: bold;
+}
+
+.review-stars i {
+	font-size: 20px;
+	color: orange;
+}
+
+
+/* reviewsInsertPage */
+.review-insert {
+	width: 1000px;	
+}
+
+.review-insert textarea {
+	width: 85%;
+	height: 100px;
+}
+
+.review-insert td {
+	padding: 25px;
+}
+
+.review-insert input[type="button"]{
+	width: 300px;
+	height: 50px;
+}
+/*------------------------------------------------------------
+
+	CART
+
+--------------------------------------------------------------*/
+.cart {
+	width: 1200px;
+}
+
+.order-prod-info > li:first-child {
+	font-size: 1.5rem;
+	font-weight: bold;
+	margin-bottom: 15px;
+}
+
+
+.cart table {
+	width: 100%;
+	margin: 50px auto;
+	text-align: center;
+}
+
+.cart .cAmount-box {
+	display: flex;
+	height: 100%;
+	justify-content: center;
+}
+
+.cart .cAmountBtn{
+	width: 35px;
+	height: 35px;
+	border: none;	
+	background: none;
+	font-weight: bold;
+	font-size: 30px;
+	color: black;
+	padding: 0;
+}
+
+.cart .cAmount {
+	border: none;
+	width: 50px;
+	text-align: center;
+	font-size: 1.3rem;
+	padding: 5px 20px;
+}
+
+.productTotalPrice {
+	display: inline-block;
+	font-size: 1.4rem;
+	font-weight: bold;
+	margin-right: 20px;
+}
+
+.result-box {
+	width: 100%;
+	margin: auto;
+	background: #f1f1f1;
+	margin: 40px auto;
+	text-align: center;
+}
+
+
+.result-box tr:nth-child(2) td {
+	padding: 30px;
+	font-weight: bold;
+	font-size: 1.5rem;
+}
+
+.result-box span {
+	font-weight: bold;
+}
+
+.result-box .use-point {
+	font-size: 1.2rem;
+}
+
+.use-point input {
+	width: 100px;
+}
+
+.cart .btn-box {
+	margin-top: 30px;
+}
+
+.cart .operator {
+	font-size: 30px;
+}
+
+.cart .chk_all {
+	display: inline-block;
+	margin-right: 30px;
+}
+/*------------------------------------------------------------
+
+	ORDERS
+
+--------------------------------------------------------------*/
+.order-list {
+	width: 1200px;
+}
+
+.order-list table {
+	text-align: center;
+}
+
+.order-list .result-box  ul li {
+	padding: 8px 0;
+}
+
+.order-list. result-box input[type="text"]{
+	border: none;
+	background: none;
+	font-size: 1.5rem;
+} 
+
+.prod-brand {
+	font-size: 1.2rem;
+	margin-botto: 10px;
+}
+
+.memberReceiveInfo {
+	text-align: left;
+}
+
+.order-info {
+	font-size: 1.3rem;
+	font-weight: bold;
+	text-align: center;
+	padding: 20px;
+}
+
+.memberReceiveInfo input[type="text"]{
+	width: 500px;
+}
+
+.memberReceiveInfo tr > td:first-child {
+	text-align: center;
+	width: 200px;
+}
+
+/* orderResultPage */
+.order-result h1{
+	color: slateblue;
+}
+
+.order-result  table {
+	text-align: center;
+}
+
+.order-result > table{
+	width: 700px;
+	margin: 50px auto;
+	font-size: 1.1rem;
+	font-weight: bold;
+	
+}
+
+.order-result > table td {
+	padding: 25px;
+}
+
+.order-result > table td span {
+	font-size: 1.5rem;
+	font-weight: bold;
+}
+
+.order-result input[type="button"]{
+	padding: 15px;
+	width: 200px;
+}
+
+/*------------------------------------------------------------
+
+	REVIEWS
+
+--------------------------------------------------------------*/
+/* reviewsViewPage */
+.review-view {
+	width: 900px;	
+}
+
+.review-view .review-stars {
+	font-size: 2rem;
+	text-align:center;
+}
+.review-view .review-content {
+	padding: 15px;
+	line-height: 1.5;
+	text-align:center;
+}
+
+.review-view .product-img {
+	margin: 20px auto;
+}
+
+/* reviewsInsertPage */
+.reviews-insert {
+	width: 1000px;
+}

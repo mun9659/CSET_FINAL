@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<!-- DAO가 들어간다 -->
+<mapper namespace="com.koreait.cset.dao.ReviewsDAO">
+	
+	<select id="reviewsTotalRecords" resultType="int">
+		SELECT COUNT(*)
+		FROM REVIEWS
+		WHERE PNO = #{pNo}
+	</select>
+	<!-- 리뷰 LIST 조회 -->
+	<select id="selectReviewsList" resultType="com.koreait.cset.dto.ReviewsDTO">
+		SELECT *
+		FROM (SELECT ROWNUM AS RN, A.*
+			FROM (SELECT PNO, RNO, MID, RCONTENT, RFILENAME, RREGDATE, RRATING
+				FROM REVIEWS
+				WHERE PNO = #{param1} 
+		 		ORDER BY RNO DESC) A )
+		 WHERE RN BETWEEN #{param2} AND #{param3}
+	</select>
+	
+	<!-- 리뷰 VIEW -->
+	<select id="selectByrNo" resultType="com.koreait.cset.dto.ReviewsDTO">
+		SELECT 	RNO, PNO, MID, RCONTENT, RFILENAME, RRATING, RREGDATE
+		FROM REVIEWS
+		WHERE RNO = #{rNo}
+	</select>
+	
+	<!-- 리뷰 UPDATE  -->
+	<update id="updateReviews">
+		UPDATE REVIEWS
+		SET RCONTENT = #{rContent}, 
+		<if test="rFilename != null || rFilename != ''">
+			RFILENAME = #{rFilename,jdbcType=VARCHAR}, 
+		</if>
+		RRATING = #{rRating}
+		WHERE RNO = #{rNo}
+	</update>
+	
+	<!-- 리뷰 DELETE -->
+	<delete id="deleteReviews">
+		DELETE FROM REVIEWS
+		WHERE RNO = #{param1}
+	</delete>
+
+	<!-- 리뷰 작성 -->
+	<insert id="insertReviews" >
+		INSERT INTO REVIEWS (RNO, PNO, MID, RCONTENT, 
+			<if test="rFilename != null || rFilename != ''">
+				RFILENAME, 
+			</if>
+			RRATING, RREGDATE)
+		VALUES (REVIEWS_SEQ.NEXTVAL,#{pNo}, #{mId}, #{rContent},
+			<if test="rFilename != null || rFilename != ''">
+				#{rFilename,jdbcType=VARCHAR},
+			</if> 
+			#{rRating}, SYSDATE)
+		
+	</insert>
+	
+	<!-- 마이페이지 내가 작성한 리뷰 리스트  -->
+	<select id="selectMyReviewsList" resultType="com.koreait.cset.dto.ReviewsJoinVO" parameterType="String">
+		SELECT R.PNO, R.RNO, M.MID, R.RCONTENT, P.PFILENAME, R.RREGDATE, R.RRATING, P.PNAME
+				FROM REVIEWS R , MEMBERS M , PRODUCTS P
+				WHERE M.MID = R.MID
+				AND R.PNO = P.PNO
+				AND M.MID = #{param1}
+				ORDER BY R.RREGDATE DESC
+		 		
+	</select>
+
+</mapper>

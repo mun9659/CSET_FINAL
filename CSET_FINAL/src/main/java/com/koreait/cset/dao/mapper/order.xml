@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.koreait.cset.dao.OrderDAO">
+	
+	<!-- 1. 주문 입력 -->
+	<insert id="orderInsert" parameterType="com.koreait.cset.dto.OrderDTO">
+		INSERT INTO ORDERS (ONO, MNO, PNO, OAMOUNT, ODATE, OADDR, OPHONE, OPAYMENT, ONOTE, OPRICE, OSIZE)
+		VALUES (ORDERS_SEQ.NEXTVAL, #{mNo}, #{pNo}, #{oAmount}, SYSDATE, #{oAddr}, #{oPhone}, 1, #{oNote}, #{oPrice}, #{oSize})
+	</insert>
+	
+	<!-- 3. 멤버값 가져오기 -->
+	<select id="selectMemberBymId" resultType="com.koreait.cset.dto.MemberDTO">
+		SELECT MNO, MNAME, MADDR, MEMAIL, MPHONE, MPAYMENT
+		FROM MEMBERS
+		WHERE MID = #{mId}
+	</select>
+	
+    <!-- 4. 총 주문 금액 -->
+    <select id="orderSumMoney" resultType="int">
+		SELECT NVL(SUM(O.OPRICE), 0)
+		FROM ORDERS O
+		WHERE O.MNO = ( SELECT M.MNO FROM MEMBERS M WHERE M.MID = #{mId} )
+    </select>
+    
+    <!-- 5-1. 주문 완료 후 회원 포인트 값 변경(포인트 사용) -->
+    <update id="memberUpdateMinusmPoint" parameterType="int">
+    	UPDATE MEMBERS
+    	SET MPOINT = NVL(MPOINT, 0) - #{param1}
+    	WHERE MNO = #{param2}
+    </update>
+    
+    <!-- 5-2. 주문 완료 후 회원 포인트 값 변경(포인트 미사용) -->
+    <update id="memberUpdatePlusmPoint" parameterType="int">
+    	UPDATE MEMBERS
+    	SET MPOINT = NVL(MPOINT, 0) + #{param1}
+    	WHERE MNO = #{param2}
+    </update>
+    
+    <!-- 6. 주문 완료 후 회원 등급 비교 후 변경 -->
+    <update id="memberUpdatemGrade">
+    	UPDATE MEMBERS
+    	SET MGRADE = #{param2}
+    	WHERE MID = #{param1}
+    </update>
+    
+    <!-- 7. 주문 완료 후 장바구니 클리어 -->
+    <delete id="cartClearCommand">
+    	DELETE FROM CART
+    	WHERE MID = #{param1}
+    </delete>
+    
+    <!-- 8. 주문 완료 후 상품 재고에서 수량 감소 -->
+    <update id="stockMinusUpdate">
+    	UPDATE STOCK
+    	SET SAMOUNT = SAMOUNT - #{param3}
+    	WHERE PNO = #{param1} AND PSIZE = #{param2}
+    </update>
+    
+    <!-- 9. 재고 수량 확인 -->
+    <select id="stockSelectBypNopSize" resultType="int">
+    	SELECT NVL(SAMOUNT, 0)
+    	FROM STOCK
+    	WHERE PNO = #{param1} AND PSIZE = #{param2}
+    </select>
+</mapper>

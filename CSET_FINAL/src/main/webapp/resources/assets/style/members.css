@@ -1,0 +1,479 @@
+@charset "UTF-8";
+
+/*------------------------------------------------------------
+
+	MEMBERS
+
+--------------------------------------------------------------*/
+/* 1. memberLoginPage */
+.login-wrap{
+	width: 500px;
+	margin: 100px auto;
+	border: 2px solid #333;
+	border-radius: 15px;
+	padding: 40px;
+	text-align: center;
+}
+
+.page-title {
+	font-weight: bold;
+	font-size: 35px;
+}
+
+.login-notice {
+	color: slateblue;
+	margin: 20px 0;
+}
+
+.login-wrap table {
+	width: 100%;
+	margin-top: 20px;
+	border:none;
+}
+
+.login-wrap table td {
+	padding: 10px ;
+	text-align: center;
+	border: none;
+}
+
+.login-btn {
+	display: block;
+	height: 45px;
+	width: 100%;
+	margin: 10px 0;
+}
+
+.login-input {
+	disiplay:block;
+	height: 45px;
+	width: 100%;
+}
+
+.saveIdChk {
+	display: block;
+	margin-top: 20px;
+}
+
+
+/* 2. memberViewPage.jsp */
+.mypage.wrap {
+	width: 1200px;	
+}
+
+
+.my-menu {
+	width: 100%;
+	margin: 80px auto;
+	background: #e8e8e8;
+	border: 1px solid #333;
+}
+
+.my-menu > ul {
+	display: flex;
+	margin: 20px 0;
+	padding: 20px;
+}
+
+.my-menu > ul > li {
+	width: 20%;
+	padding: 20px 0;	
+}
+
+
+.my-menu ul a {
+	display: block;
+	line-height: 2;
+	text-align: center;
+	font-size: 1.1rem;
+	font-weight: bold;
+	width: 100%;
+}
+
+.my-menu > ul > li:not(:last-child) a {
+	border-right: 1px solid black;
+}
+
+.my-menu ul i {
+	display: block;
+	text-align: center;
+	width: 100%;
+	font-size: 60px;
+	margin-bottom: 20px;
+}
+
+.my-menu .my-points {
+	color: orange;
+}
+
+.mygrade-box {
+	width: 80%;
+	margin: 40px auto;
+}
+
+.mygrade-box table {
+	text-align: center;
+}
+
+.mygrade-box ul li {
+	margin: 10px auto;
+}
+
+.mygrade-box table span {
+	font-weight: bold;
+	font-size: 1.2rem;
+}
+
+.mypage form {
+	border-top: 3px solid grey;
+	border-bottom: 3px solid grey;
+	width: 80%;
+	margin: auto;
+	padding: 20px 0;
+}
+
+.my-view {
+	width: 60%;
+	margin: 30px auto;
+	text-align: center;
+	border:none;
+}
+
+.my-view td {
+	padding: 10px;
+	border-top: 1px solid #333;
+	border-bottom: 1px solid #333;
+}
+
+.my-view td:first-child {
+	background: #e8e8e8;
+}
+
+
+
+.mypage .btn-box input[type="button"]{
+	width: 180px;
+	height: 50px;	
+}
+
+.mypage .btn-box input[type="button"]:not(:last-of-type){
+	margin-right: 15px;
+}
+
+
+/* 3. memberInsertPage.jsp */
+.join.wrap {
+	width: 900px;
+}
+
+.join form {
+	width: 100%;
+	margin: auto;
+	border-top: 3px solid grey;
+	border-bottom: 3px solid grey;
+	padding: 40px 0;
+}
+
+.join form table {
+	width: 90%;
+	margin: auto;
+	border: none;
+	
+}
+
+.join table td {
+	padding: 10px 20px;
+}
+
+.join table td:first-of-type {
+	width: 25%;
+	background: #e8e8e8;
+	text-align: center;
+	vertical-align: middle;
+}
+
+.join table td:last-of-type {
+	width: 75%;
+}
+
+.join table textarea {
+	width: 90%;
+}
+
+/* 4. memberFindIdPage.jsp */
+.find {
+	width: 600px;
+	margin: 120px auto;
+	padding: 30px;
+}
+
+
+.find form {
+	width: 90%;
+	margin: auto;
+	border-top: 3px solid grey;
+	border-bottom: 3px solid grey;
+	padding: 40px 0;
+}
+.find table {
+	text-align: center;
+	width: 80%;
+	margin: auto;
+	border: none;
+}
+
+#findIdResult {
+	font: 1.5rem;
+	font-weight: bold;
+	color: slateblue;
+	margin: 40px auto;
+	text-align: center;
+	
+}
+
+.find table td {
+	padding: 20px 0px;
+	border: none;
+}
+
+
+/* 5.memberListPage.jsp */
+.memberlist {
+	width: 1200px;
+}
+
+.memberlist-menu {
+	width: 500px;
+	margin: 40px auto;
+	display: flex;
+	justify-content: space-between;
+}
+
+.memberlist-menu > a {
+	display: inline-block;
+	text-align: center;
+	width: 200px;
+	background: black;
+	padding: 10px;
+	color: white; 
+}
+
+.memberlist > form {
+	text-align: center;
+}
+
+.memberlist > form input[type="text"]{
+	padding: 7.5px;
+	width: 200px;
+}
+.memberlist table {
+	margin: 30px auto;
+}
+
+.memberlist table td {
+	padding: 10px 15px;
+	border-top: 1px solid #333;
+	border-bottom: 1px solid #333;
+	text-align: center;
+}
+
+.memberlist table thead td {
+	background: #e8e8e8;
+		
+}
+
+
+/* 6. memberProductInsertPage */
+.product-insert.wrap{
+	width: 600px;
+}
+
+.product-insert select {
+	padding: 5px;
+}
+
+.product-insert table{
+	margin: auto;
+	border: none;
+}
+
+
+.product-insert table td {
+	padding: 10px;
+	border:none;
+	
+}
+
+.product-insert .button-box {
+	display:flex;
+	justify-content: space-between;
+}
+
+/* 7. memberProductListPage.jsp */
+.admin-prod {
+	width: 1400px;
+}
+
+.admin-prod input[type="button"] {
+	width: 100px;
+	padding: 8px;
+}
+
+.admin-prod input[type="text"] {
+	width: 100px;
+	padding: 5px;
+}
+
+.admin-prod table {
+	text-align:center;
+	border-top: 3px solid grey;
+	border-bottom: 3px solid grey;
+}
+
+.admin-prod table td {
+	vertical-align: middle;
+	padding: 10px;
+	border-top: 1px solid lightgrey;
+	border-bottom: 1px solid lightgrey;
+}
+
+.admin-prod table thead td {
+	font-weight: bold;
+}
+
+.admin-prod .price-change > span {
+	display:block;
+	text-align: center;
+	margin: 5px 0;
+}
+
+/* myContentViewPage.jsp*/
+.myContent {
+	width: 1200px;
+}
+
+.myContent table {
+	width: 100%;
+	margin: 50px auto;
+	padding: 30px 0;
+	border-top: 3px solid grey;
+	border-bottom: 3px solid grey;
+}
+
+.myContent table td
+, .myContent table th{
+	text-align: center;
+	padding: 15px;
+	border-top: 1px solid lightgrey;
+	border-bottom: 1px solid lightgrey;
+}
+
+.my-reviews
+, .my-board {
+	margin: 40px auto;
+}
+
+.my-reviews .review-contents {
+	width: 450px;
+}
+
+/* memberOrderViewPage */
+.myorders.wrap{
+	width: 1200px;
+}
+
+.myorders .order-period {
+	margin: 30px 0;
+}
+
+.myorders table {
+	width: 100%;
+	padding: 40px 0;
+	border-top: 3px solid grey;
+	border-bottom: 3px solid grey;
+	text-align: center;
+}
+
+
+/* memberLeavePage */
+.leave {
+	width: 600px;
+}
+
+.leave table {
+	width: 350px;
+	margin: auto;
+	margin-bottom: 30px;
+}
+
+.leave table, .leave td, .leave th {
+	border: none;
+}
+
+.leave table input[type="text"]
+, .leave table input[type="password"] {
+	width: 200px;
+}
+
+.leave table input[type="button"]{
+	width: 100%;
+	height: 50px;
+}
+
+/* memberemailAuthConfirm */
+.emailAuth {
+	width: 700px;	
+}
+
+.emailAuth form {
+	text-align: center;
+}
+.emailAuth form label {
+	display: block;
+	width: 300px;
+	margin: auto;
+	margin-bottom: 50px;
+}
+
+.emailAuth form input[type="button"]{
+	width: 300px;
+	height: 50px;
+}
+/* memberDetailPage */
+.member-info {
+	width: 900px;
+}
+.member-info > form {
+	border-top: 3px solid grey;
+	border-bottom: 3px solid grey;
+	padding: 40px auto;
+}
+
+.member-info form .my-view {
+	width: 80%;
+}
+
+.member-info table ul li {
+	margin: 8px auto;
+}
+
+.member-info table ul li:nth-child(2){
+	display: flex;
+	justify-content: center;
+}
+
+.member-info table ul li:nth-child(2) select{
+	margin-right: 10px;
+}
+
+.member-order-detail {
+	width: 1200px;
+}
+
+.member-order-detail table{
+	margin: 60px auto;
+	text-align: center;
+}
+
+
+

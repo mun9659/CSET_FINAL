@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.koreait.cset.dao.ProductsDAO">
+ <select id="productsOrderByRank" resultType="com.koreait.cset.dto.ProductsDTO">
+    SELECT P.PNO, P.PFILENAME, P.PNAME, P.PPRICE, PDISRATE, ( SELECT AVG( RRATING ) FROM REVIEWS R WHERE P.PNO = R.PNO ) AS PRATING
+    FROM PRODUCTS P , (SELECT *
+                     FROM (SELECT O.PNO,  SUM(O.OAMOUNT)
+                           FROM ORDERS O, PRODUCTS P
+                           WHERE O.PNO = P.PNO
+                           GROUP BY O.PNO
+                           ORDER BY SUM(O.OAMOUNT) DESC)
+                           WHERE ROWNUM &lt;= 10) A
+    WHERE P.PNO = A.PNO
+   </select> 
+   
+
+	<select id="productsSearch" resultType="com.koreait.cset.dto.ProductsDTO">
+		SELECT PNO, PNAME, PFILENAME, PPRICE, PCATEGORY, PCATEGORY_SUB, PBRAND, PDISRATE
+		FROM PRODUCTS
+		WHERE UPPER (PNAME || PCATEGORY || PCATEGORY_SUB || PBRAND)
+		LIKE UPPER ('%' ||
+         #{searchBox} ||
+         '%')
+		ORDER BY PNO DESC
+	</select>
+   
+   <select id="productsSelectList" resultType="com.koreait.cset.dto.ProductsDTO">
+   SELECT PNO, PNAME, PFILENAME, PPRICE, PCATEGORY, PCATEGORY_SUB, PBRAND,( SELECT AVG( RRATING ) FROM REVIEWS R WHERE P.PNO = R.PNO ) AS PRATING, PDISRATE 
+      FROM PRODUCTS P
+      <where>
+         <if test="pCategory != null">
+            PCATEGORY = ${pCategory}
+         </if>
+         <if test="pCategory_sub != null">
+            PCATEGORY_SUB = ${pCategory_sub}
+         </if>
+         <if test="pBrand != null ">
+               PBRAND = ${pBrand}
+         </if>
+      </where>
+      ORDER BY PNO DESC
+   </select>
+   
+   <select id="productsOrderByDynamic" resultType="com.koreait.cset.dto.ProductsDTO">
+      SELECT PNO, PNAME, PFILENAME, PPRICE, PCATEGORY, PCATEGORY_SUB, PBRAND,( SELECT AVG( RRATING ) FROM REVIEWS R WHERE P.PNO = R.PNO ) AS PRATING, PDISRATE
+      FROM PRODUCTS P
+      <where>
+      <if test="pCategoryList != null">
+         PCATEGORY IN
+         <foreach item="pCategory" collection="pCategoryList" open="("
+            close=")" separator=",">
+            #{pCategory}
+         </foreach>
+      </if>
+      <if test="pCategory_subList != null and pCategoryList != null"> OR</if>
+   
+      <if test="pCategory_subList != null">
+         PCATEGORY_SUB IN
+         <foreach item="pCategory_sub" collection="pCategory_subList"
+            open="(" close=")" separator=",">
+            #{pCategory_sub}
+         </foreach>
+      </if>
+      <if
+         test="(pCategory_subList != null or pCategoryList != null) and pBrandList != null"> OR</if>
+   
+      <if test="pBrandList != null">
+         PBRAND IN
+         <foreach item="pBrand" collection="pBrandList" open="("
+            close=")" separator=",">
+            #{pBrand}
+         </foreach>
+      </if>
+      <if
+         test="(pCategory_subList != null or pCategoryList != null or pBrandList != null) and (searchBox != null and searchBox !='')"> AND</if>
+      <if test="searchBox != null  and searchBox !='' ">
+        UPPER (PNAME || PCATEGORY || PCATEGORY_SUB || PBRAND)
+		LIKE UPPER ('%' ||
+         #{searchBox} ||
+         '%')
+      </if>
+      </where>
+      <if test="searchOrderBy != null">
+      ORDER BY
+      <choose>
+         <when test="searchOrderBy == 'pNoDesc' ">PNO DESC</when>
+         <when test="searchOrderBy == 'pPriceDesc' ">PPRICE DESC</when>
+         <when test="searchOrderBy == 'pPriceAsc' ">PPRICE ASC</when>
+         <when test="searchOrderBy == 'pRatingDesc' ">( SELECT AVG( RRATING ) FROM REVIEWS R WHERE P.PNO = R.PNO ) DESC</when>
+      </choose>
+      </if>
+   </select>
+   
+   <select id="productsSelectBypNo" resultType="com.koreait.cset.dto.ProductsDTO">
+      SELECT PNO, PNAME, PFILENAME, PPRICE, PCATEGORY, PCATEGORY_SUB, PBRAND,( SELECT AVG( RRATING ) FROM REVIEWS R WHERE P.PNO = R.PNO ) AS PRATING, PDISRATE 
+      FROM PRODUCTS P WHERE PNO = #{pNo}
+   </select>
+   
+   <!-- 5. 재고 조회 -->
+   <select id="stockSelectBypNo" resultType="com.koreait.cset.dto.StockDTO">
+   	SELECT * FROM STOCK WHERE PNO = #{pNo}
+   </select>
+   
+   <!-- 6. 사이즈별 재고량 조회 -->
+      <select id="stockSelectBypNopSize" resultType="int">
+    	SELECT SAMOUNT
+		FROM STOCK 
+		WHERE PSIZE = #{param1}
+		AND PNO = #{param2}
+   </select>
+
+</mapper>
