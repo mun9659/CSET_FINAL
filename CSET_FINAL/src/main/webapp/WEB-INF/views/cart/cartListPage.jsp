@@ -88,6 +88,13 @@ function fn_cancle(f) {
 	}
 }
 
+function formatNumber(num) { // 변화되는 숫자에 천의 자리 마다 , 붙이기
+	var regexp = /\B(?=(\d{3})+(?!\d))/g; // B는 단어 경계가 아닌 부분에 대응
+	 									   // 숫자 3개 뒤에 숫자가 아
+ 	return num.toString().replace(regexp, ',');
+ }
+
+
 </script>
 	<div class="cart wrap">
 		<h2 class="page-title">클로젯 배송 상품</h2>
@@ -140,7 +147,7 @@ function fn_cancle(f) {
 											<td>
 												 <!-- 상품 가격 * 수량 -->
 												 <!-- 수정1. 상품 전체 가격 format 추가, pDisrate 값 추가 -->
-												<span class="productTotalPrice" id="cPrice${cDTO.cNo }"></span>
+												<span class="productTotalPrice" id="cPrice${cDTO.cNo }"><fmt:formatNumber value="${cDTO.cAmount * cDTO.productPrice }" pattern="#,#00"/> </span>
 												<input type="hidden" name="cNo" value="${cDTO.cNo }" /> <!-- 바로 주문용 장바구니 번호 -->
 												 <!-- 수정2. 상품 가격 pDisrate 값 추가 -->
 												<input type="hidden" id="pPrice${cDTO.cNo }" name="pPrice" value="${cDTO.pPrice * (1-(cDTO.pDisrate/100)) }" /> <!-- 상품 가격(할인율 적용) -->
@@ -151,7 +158,7 @@ function fn_cancle(f) {
 											$(document).ready(function(){
 												var i = '${cDTO.cNo }';
 												var productPrice = parseInt('${cDTO.productPrice }'); // 각 상품에 할인율 적용된 가격
-												$('#cPrice'+i).text(parseInt(productPrice * $('#cAmount'+i).val()));
+												// var cPrice = parseInt( $('#cAmount'+i).val() * productPrice ); // 반점 있는 것까지 갖고오기
 
 												// 전체선택 해제여부
 												$("#chk").click(function() {
@@ -177,17 +184,29 @@ function fn_cancle(f) {
 															, cNo : '${cDTO.cNo}'
 															}
 														, success: function( responseObj ) {
+															
 												
-															var sum = parseInt($('#sumMoney').text());		
+															// 반점 값을 계속 갖고오기 때문에 ,을 삭제하고 숫자로 변환시킨다.
+															var sum = $('#sumMoney').text();  
+															
+															var sumArr = sum.split(',');
+															
+															var sumReturn = '';
+															
+															for (var j in sumArr) {
+																sumReturn += sumArr[j];
+															}
+															
+															sumReturn = parseInt(sumReturn);
 
 															$('#cAmount'+i).val(responseObj.result);  // 상품 수량 변경
 															
 															var productTotalPrice = parseInt( $('#cAmount'+i).val() * productPrice );
 																														
-															$('#cPrice'+i).text(productTotalPrice);  // 각 상품 총 가격 변경
-															sum += productPrice;													
-															$('#sumMoney').text(sum); // 총 상품 가격 합산
-															if(parseInt($('#sumMoney').text()) >= 100000) {
+															$('#cPrice'+i).text(formatNumber(productTotalPrice));  // 각 상품 총 가격 변경
+															sumReturn += parseInt(productPrice);													
+															$('#sumMoney').text(formatNumber(sumReturn)); // 총 상품 가격 합산
+															if( sumReturn >= 100000) {
 																$('#fee').text(0); // 총 상품 가격에 따른 배송비 분리
 																$('#fee + input[type="hidden"]').val(0);
 															} else {
@@ -195,10 +214,10 @@ function fn_cancle(f) {
 																$('#fee + input[type="hidden"]').val(3000);
 															}
 															
-															var total_price = parseInt($('#sumMoney').text()) + parseInt($('#fee').text());	
+															var total_price = sumReturn + parseInt($('#fee').text());	
 																												
 															$('#total_price').val(total_price); // 결과 값 */
-															$('#total_price + span').text(total_price); // 결과 값 */
+															$('#total_price + span').text(formatNumber(total_price)); // 결과 값 */
 														}
 													});
 												});	
@@ -218,16 +237,27 @@ function fn_cancle(f) {
 															}
 														, success: function( responseObj ) {
 															
-															var sum = parseInt($('#sumMoney').text());
+															// 반점 값을 계속 갖고오기 때문에 ,을 삭제하고 숫자로 변환시킨다.
+															var sum = $('#sumMoney').text();  
+															
+															var sumArr = sum.split(',');
+															
+															var sumReturn = '';
+															
+															for (var j in sumArr) {
+																sumReturn += sumArr[j];
+															}
+															
+															sumReturn = parseInt(sumReturn);
 															
 															$('#cAmount'+i).val(responseObj.result);  // 상품 수량 변경
 															
 															var productTotalPrice = parseInt( $('#cAmount'+i).val() * productPrice );
 															
-															$('#cPrice'+i).text(productTotalPrice);  // 각 상품 총 가격 변경
-															sum -= parseInt(productPrice);
-															$('#sumMoney').text(sum); // 총 상품 가격 합산
-															if(parseInt($('#sumMoney').text()) >= 100000) {
+															$('#cPrice'+i).text(formatNumber(productTotalPrice));  // 각 상품 총 가격 변경
+															sumReturn -= parseInt(productPrice);
+															$('#sumMoney').text(formatNumber(sumReturn)); // 총 상품 가격 합산
+															if( sumReturn >= 100000 ) {
 																$('#fee').text(0); // 총 상품 가격에 따른 배송비 분리
 																$('#fee + input[type="hidden"]').val(0);
 															} else {
@@ -236,10 +266,10 @@ function fn_cancle(f) {
 															}
 															
 															
-															var total_price = parseInt($('#sumMoney').text()) + parseInt($('#fee').text());
+															var total_price = sumReturn + parseInt($('#fee').text());
 																													
 															$('#total_price').val(total_price); // 결과 값 */
-															$('#total_price + span').text(total_price); // 결과 값 */
+															$('#total_price + span').text(formatNumber(total_price)); // 결과 값 */
 														}
 													});
 												});
@@ -261,7 +291,7 @@ function fn_cancle(f) {
 							<td>총 결제예상 금액</td>
 						</tr>
 						<tr>
-							<td><span class="bold" id="sumMoney">${sumMoney }</span></td>
+							<td><span class="bold" id="sumMoney"><fmt:formatNumber value="${sumMoney }" pattern="#,#00" /> </span></td>
 							<td><span class="operator"> + </span></td>
 							<td>
 								<span class="bold" id="fee">${fee }</span>
@@ -270,7 +300,7 @@ function fn_cancle(f) {
 							<td><span class="operator"> = </span></td>
 							<td>
 								<input type="hidden" name="total_price"  id="total_price" value="${total }" readonly="readonly"/>
-								<span>${total }</span>원
+								<span><fmt:formatNumber value="${total }" pattern="#,#00" /></span>원
 							</td>
 						</tr>
 					</table>
