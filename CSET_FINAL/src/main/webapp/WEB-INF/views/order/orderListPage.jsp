@@ -324,7 +324,7 @@
 					<td>배송주소</td>
 					<td>
 						<input type="text" id="rAddr" name="rAddr" />
-						<a onclick="sample4_execDaumPostcode()"><i class="fas fa-map-marker-alt"></i></a>
+						<a onclick="sample4_execDaumPostcode()"><i class="fas fa-map-marker-alt" style="font-size: 20px"></i></a>
 					</td>
 				</tr>
 				<tr>
