@@ -1,8 +1,5 @@
 # CSET_FINAL
-echo "# CSET_FINAL" >> README.md
-git init
-git add README.md
-git commit -m "first commit"
-git remote add origin https://github.com/mun9659/CSET_FINAL.git
-git push -u origin master
-                
+
+2020 코리아IT아카데미 신촌점 'JAVA를 활용한 풀스택 개발자 양성' 최종 프로젝트
+
+맡은 역할 - 상품(Product)을 장바구니(Cart)에 넣어 결제창(Order)에서 결제가 되게 하는 작업 진행
